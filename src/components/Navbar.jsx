@@ -1,12 +1,21 @@
 // src/components/Navbar.jsx
+import Image from 'next/image';
 
 export default function Navbar() {
   return (
     <nav className="w-full p-4">
       {/* Container to center content and set max width */}
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo/Name - Simple text like in your template */}
-        <div className="font-bold text-xl">Mejdi HADDAD</div>
+        {/* Logo/Name - Using Image component for better performance */}
+        <div className="font-bold text-xl flex items-center">
+          <Image 
+            src="/logo.png" 
+            alt="Logo" 
+            width={40} 
+            height={40} 
+            className="rounded-md"
+          />
+        </div>
         
         {/* Navigation items - Hidden on mobile, visible on medium screens and up */}
         <div className="hidden md:flex space-x-6">

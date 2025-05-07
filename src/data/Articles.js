@@ -4,44 +4,36 @@ export const articlesData = {
   articles: [
     {
       id: 1,
-      title: "How to Build a Portfolio with Next.js",
+      title:
+        "Hacking the System Design: How Search Engines Understand and Deliver Results",
       description:
-        "A step-by-step guide to creating a professional developer portfolio using Next.js and Tailwind CSS.",
-      date: "May 1, 2024",
-      image: "/article-placeholder-1.jpg",
-      url: "https://medium.com/@yourusername/how-to-build-a-portfolio-with-next-js",
-      readTime: "5 min read",
+        "The Magic of Querying, how Google finds exactly what you’re looking for in milliseconds among billions of web pages?",
+      date: "Nov 16, 2024",
+      image: "searchengine.png",
+      url: "https://haddadmejdi.medium.com/hacking-the-system-design-how-search-engines-understand-and-deliver-results-904aded3597a",
+      readTime: "10 min read",
     },
     {
       id: 2,
-      title: "The Power of Data Science in Modern Applications",
+      title:
+        "Evolution of Language Representation Techniques: A Journey from BoW to GPT",
       description:
-        "Exploring how data science is transforming software development and user experiences.",
-      date: "April 15, 2024",
-      image: "/article-placeholder-2.jpg",
-      url: "https://medium.com/@yourusername/the-power-of-data-science",
+        "The Evolution of Language Representation, how do machines transform raw text into meaningful understanding, evolving from simple word counting to complex neural networks?",
+      date: "Nov 29, 2024",
+      image: "nlp.png",
+      url: "https://haddadmejdi.medium.com/evolution-of-language-representation-techniques-a-journey-from-bow-to-gpt-02d81dc9dc9a",
       readTime: "7 min read",
     },
     {
       id: 3,
-      title: "Blockchain: Beyond Cryptocurrency",
+      title: "My AI Agent Mooc Adventure!",
       description:
-        "Practical applications of blockchain technology in various industries and how to implement them.",
-      date: "March 22, 2024",
-      image: "/article-placeholder-3.jpg",
-      url: "https://medium.com/@yourusername/blockchain-beyond-cryptocurrency",
+        "Practical applications of I just finished an awesome online course about AI. It was super cool and taught me so much about how computer programs can work together and solve problems.",
+      date: "Dec 13, 2024",
+      image: "agent.png",
+      url: "https://haddadmejdi.medium.com/my-ai-agent-mooc-adventure-71f48ed8718d",
       readTime: "8 min read",
     },
-    {
-      id: 4,
-      title: "Productivity Hacks for Developers",
-      description:
-        "Boost your productivity with these proven techniques and tools for software developers.",
-      date: "February 10, 2024",
-      image: "/article-placeholder-4.jpg",
-      url: "https://medium.com/@yourusername/productivity-hacks-for-developers",
-      readTime: "6 min read",
-    },
   ],
-  mediumProfileUrl: "https://medium.com/@yourusername",
+  mediumProfileUrl: "https://haddadmejdi.medium.com/",
 };

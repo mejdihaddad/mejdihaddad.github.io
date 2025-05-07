@@ -1,13 +1,38 @@
 // src/components/Articles.jsx
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { articlesData } from '@/data/Articles';
 
 export default function Articles() {
-  // Reference to the scroll container
+  // Animation and UI states
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
   const scrollContainerRef = useRef(null);
+  
+  // Animation on scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
   
   // Function to scroll the container left or right
   const scroll = (direction) => {
@@ -23,81 +48,90 @@ export default function Articles() {
   };
 
   return (
-    <section id="articles" className="container mx-auto py-16 px-4">
-      {/* Section heading with Medium link */}
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">Medium Articles</h2>
-        
-        {/* Link to Medium profile */}
-        <a 
-          href={articlesData.mediumProfileUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline flex items-center"
-        >
-          View all on Medium
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
+    <section 
+      id="articles" 
+      className="container mx-auto py-16 px-4"
+      ref={sectionRef}
+    >
+      {/* Section heading with Medium link - animated */}
+      <div className={`flex justify-between items-center mb-8 transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}>
+        <h2 className="text-2xl font-bold">Articles</h2>
+      
+        {/* Navigation arrows with hover effect */}
+        <div className="flex justify-end gap-2 mb-4">
+          <button 
+            onClick={() => scroll('left')}
+            className="hover:bg-gray-200 p-2 rounded-full transition-transform hover:scale-110"
+            aria-label="Scroll left"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button 
+            onClick={() => scroll('right')}
+            className="hover:bg-gray-200 p-2 rounded-full transition-transform hover:scale-110"
+            aria-label="Scroll right"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
       
-      {/* Navigation arrows */}
-      <div className="flex justify-end gap-2 mb-4">
-        <button 
-          onClick={() => scroll('left')}
-          className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
-          aria-label="Scroll left"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <button 
-          onClick={() => scroll('right')}
-          className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full"
-          aria-label="Scroll right"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-      
-      {/* Horizontally scrollable articles container */}
+      {/* Horizontally scrollable articles container with animation */}
       <div 
         ref={scrollContainerRef}
-        className="flex overflow-x-auto gap-6 pb-6 hide-scrollbar" 
+        className={`flex overflow-x-auto gap-6 pb-6 hide-scrollbar transition-all duration-700 delay-200 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {articlesData.articles.map(article => (
+        {articlesData.articles.map((article, index) => (
           <a
             key={article.id}
             href={article.url}
             target="_blank"
             rel="noopener noreferrer" 
-            className="flex-shrink-0 w-80 border rounded-lg overflow-hidden hover:shadow-md transition-shadow group"
+            className="flex-shrink-0 w-80 bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col"
+            style={{
+              transitionDelay: `${200 + index * 100}ms`,
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
+            }}
           >
-            {/* Article image */}
-            <div className="relative h-40 w-full">
+            {/* Article image with hover effect */}
+            <div className="relative h-40 w-full overflow-hidden">
               <Image 
                 src={article.image}
                 alt={article.title}
                 fill
-                className="object-cover transition-transform group-hover:scale-105"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              
-              {/* Overlay with read time */}
-              <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs py-1 px-2 rounded">
+              {/* Overlay with read time - animated */}
+              <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs py-1 px-2 rounded group-hover:bg-opacity-90 transition-all">
                 {article.readTime}
               </div>
             </div>
             
-            {/* Article details */}
-            <div className="p-4">
+            {/* Article details with hover effects */}
+            <div className="p-5">
               <div className="text-sm text-gray-500 mb-2">{article.date}</div>
-              <h3 className="text-lg font-medium group-hover:text-blue-600 transition-colors">{article.title}</h3>
-              <p className="text-gray-600 mt-2 text-sm line-clamp-2">{article.description}</p>
+              <h3 className="text-lg font-medium group-hover:text-blue-600 transition-colors mb-2">{article.title}</h3>
+              <p className="text-gray-600 text-sm line-clamp-2">{article.description}</p>
+              
+              {/* Read more link - visible on hover */}
+              <div className="mt-4 overflow-hidden h-6">
+                <span className="text-blue-600 text-sm font-medium transition-transform translate-y-8 inline-block group-hover:translate-y-0 flex items-center">
+                  Read article
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
+              </div>
             </div>
           </a>
         ))}
