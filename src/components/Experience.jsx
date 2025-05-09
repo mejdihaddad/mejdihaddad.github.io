@@ -1,11 +1,10 @@
-// src/components/Certifications.jsx
+// src/components/Experience.jsx
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import Image from 'next/image';
-import { certificationsData } from '@/data/Certifications';
+import { experienceData } from '@/data/Experience';
 
-export default function Certifications() {
+export default function Experience() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -34,7 +33,7 @@ export default function Certifications() {
   
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 400; 
+      const scrollAmount = 400; // Adjust based on your card width + gap
       const container = scrollContainerRef.current;
       if (direction === 'left') {
         container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -46,15 +45,14 @@ export default function Certifications() {
 
   return (
     <section 
-      id="certifications" 
+      id="experience" 
       className="container mx-auto py-16 px-4"
       ref={sectionRef}
     >
-      {/* Section heading with title and navigation - animated */}
       <div className={`flex justify-between items-center mb-8 transition-all duration-700 ease-out ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}>
-        <h2 className="text-2xl font-bold">Certifications</h2>
+        <h2 className="text-2xl font-bold">Experience</h2>
         
         <div className="flex gap-2">
           <button 
@@ -85,9 +83,9 @@ export default function Certifications() {
         }`}
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {certificationsData.certifications.map((certification, index) => (
+        {experienceData.experiences.map((experience, index) => (
           <div
-            key={certification.id}
+            key={experience.id}
             className="flex-shrink-0 w-80 bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300"
             style={{
               transitionDelay: `${200 + index * 100}ms`,
@@ -95,50 +93,54 @@ export default function Certifications() {
               transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
             }}
           >
-            <div className="relative h-48 w-full bg-gray-100 flex items-center justify-center overflow-hidden">
-              <Image 
-                src={certification.image}
-                alt={`${certification.title} certificate`}
-                width={320}
-                height={180}
-                className="object-contain p-1 transition-all duration-500 hover:scale-110"
-                priority
+            <div className="h-44 w-full bg-gray-50 border-b border-gray-100 flex items-center justify-center">
+              <img 
+                src={experience.logo}
+                alt={`${experience.company} logo`}
+                style={{
+                  width: '250px',  
+                  height: '150px',  
+                  objectFit: 'contain',
+                  transition: 'transform 0.5s ease'
+                }}
+                className="hover:scale-110"
               />
             </div>
             
             <div className="p-5">
-              <h3 className="text-lg font-medium mb-2">{certification.title}</h3>
-              <div className="text-gray-600 mb-4">{certification.issuer}</div>
+              <h3 className="text-lg font-medium mb-1">{experience.role}</h3>
+              <div className="text-blue-600 font-medium mb-2">{experience.company}</div>
               
-              <div className="flex items-center text-sm text-gray-500 mb-3">
+              {/* Location and duration */}
+              <div className="flex items-center text-sm text-gray-500 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {experience.location}
+              </div>
+              
+              <div className="flex items-center text-sm text-gray-500 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Issued: {certification.date}
+                {experience.duration}
               </div>
               
-              <div className="flex flex-wrap gap-2 mb-4">
-                {certification.skills.map((skill, index) => (
+              <p className="text-sm text-gray-600 mb-4">
+                {experience.description}
+              </p>
+              
+              <div className="flex flex-wrap gap-2">
+                {experience.skills.map((skill, index) => (
                   <span 
                     key={index} 
-                    className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded transition-colors hover:bg-blue-100"
+                    className="text-xs bg-gray-100 py-1 px-2 rounded hover:bg-gray-200 transition-colors"
                   >
                     {skill}
                   </span>
                 ))}
               </div>
-              
-              <a 
-                href={certification.verificationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-blue-600 hover:text-blue-800 flex items-center transition-all hover:translate-x-1"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-                Verify Certificate
-              </a>
             </div>
           </div>
         ))}

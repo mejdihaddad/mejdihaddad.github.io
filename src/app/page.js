@@ -5,12 +5,14 @@ import Articles from "@/components/Articles";
 import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Experience from "@/components/Experience";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       <Hero />
       <Skills />
+      <Experience />
       <Certifications />
       <Projects />
       <Articles />

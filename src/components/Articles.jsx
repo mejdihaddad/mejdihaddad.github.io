@@ -6,12 +6,10 @@ import Image from 'next/image';
 import { articlesData } from '@/data/Articles';
 
 export default function Articles() {
-  // Animation and UI states
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const scrollContainerRef = useRef(null);
   
-  // Animation on scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -34,10 +32,9 @@ export default function Articles() {
     };
   }, []);
   
-  // Function to scroll the container left or right
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 400; // Adjust based on your card width + gap
+      const scrollAmount = 400; 
       const container = scrollContainerRef.current;
       if (direction === 'left') {
         container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -52,19 +49,18 @@ export default function Articles() {
       id="articles" 
       className="container mx-auto py-16 px-4"
       ref={sectionRef}
+      aria-label="Published Articles"
     >
-      {/* Section heading with Medium link - animated */}
       <div className={`flex justify-between items-center mb-8 transition-all duration-700 ease-out ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}>
         <h2 className="text-2xl font-bold">Articles</h2>
       
-        {/* Navigation arrows with hover effect */}
         <div className="flex justify-end gap-2 mb-4">
           <button 
             onClick={() => scroll('left')}
-            className="hover:bg-gray-200 p-2 rounded-full transition-transform hover:scale-110"
-            aria-label="Scroll left"
+            className="bg-white hover:bg-gray-100 p-2 rounded-full shadow-sm transition-transform hover:scale-110"
+            aria-label="Scroll articles to the left"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -72,8 +68,8 @@ export default function Articles() {
           </button>
           <button 
             onClick={() => scroll('right')}
-            className="hover:bg-gray-200 p-2 rounded-full transition-transform hover:scale-110"
-            aria-label="Scroll right"
+            className="bg-white hover:bg-gray-100 p-2 rounded-full shadow-sm transition-transform hover:scale-110"
+            aria-label="Scroll articles to the right"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -82,34 +78,37 @@ export default function Articles() {
         </div>
       </div>
       
-      {/* Horizontally scrollable articles container with animation */}
       <div 
         ref={scrollContainerRef}
         className={`flex overflow-x-auto gap-6 pb-6 hide-scrollbar transition-all duration-700 delay-200 ease-out ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        aria-label="Article list - scroll horizontally to see more"
       >
         {articlesData.articles.map((article, index) => (
           <a
             key={article.id}
             href={article.url}
             target="_blank"
-            rel="noopener noreferrer" 
+            rel="noopener noreferrer"
             className="flex-shrink-0 w-80 bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col"
             style={{
               transitionDelay: `${200 + index * 100}ms`,
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
             }}
+            aria-label={`Read article: ${article.title}`}
           >
             {/* Article image with hover effect */}
             <div className="relative h-40 w-full overflow-hidden">
               <Image 
                 src={article.image}
-                alt={article.title}
+                alt={`Cover image for article: ${article.title}`}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 320px"
               />
               {/* Overlay with read time - animated */}
               <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs py-1 px-2 rounded group-hover:bg-opacity-90 transition-all">
@@ -117,13 +116,11 @@ export default function Articles() {
               </div>
             </div>
             
-            {/* Article details with hover effects */}
             <div className="p-5">
               <div className="text-sm text-gray-500 mb-2">{article.date}</div>
               <h3 className="text-lg font-medium group-hover:text-blue-600 transition-colors mb-2">{article.title}</h3>
               <p className="text-gray-600 text-sm line-clamp-2">{article.description}</p>
               
-              {/* Read more link - visible on hover */}
               <div className="mt-4 overflow-hidden h-6">
                 <span className="text-blue-600 text-sm font-medium transition-transform translate-y-8 inline-block group-hover:translate-y-0 flex items-center">
                   Read article
@@ -137,7 +134,27 @@ export default function Articles() {
         ))}
       </div>
       
-      {/* Add this style to hide scrollbar but keep scrolling functionality */}
+      <div className={`text-center mt-8 transition-all duration-700 delay-400 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}>
+        <a 
+          href={articlesData.mediumProfileUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center text-gray-600 hover:text-black transition-colors"
+          aria-label="Visit Mejdi Haddad's Medium profile for more articles"
+        >
+          <svg viewBox="0 0 1043.63 592.71" className="h-5 w-5 mr-2">
+            <g data-name="Layer 2">
+              <g data-name="Layer 1">
+                <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.16-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.91-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94" fill="currentColor"></path>
+              </g>
+            </g>
+          </svg>
+          Read more articles on Medium
+        </a>
+      </div>
+      
       <style jsx global>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;

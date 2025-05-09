@@ -12,8 +12,8 @@ export const skillsData = {
         { name: "Flask", level: "Advanced" },
         { name: "React.js", level: "Intermediate" },
         { name: "MongoDB", level: "Intermediate" },
+        { name: "MySQL", level: "Intermediate" },
         { name: "TailwindCSS", level: "Intermediate" },
-        { name: "Docker", level: "Beginner" },
       ],
     },
     {

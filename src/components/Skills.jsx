@@ -1,21 +1,18 @@
 // src/components/Skills.jsx
-'use client'; // This enables client-side functionality like useState
+'use client'; 
 
 import { useState, useEffect, useRef } from 'react';
 import { skillsData } from '@/data/Skills';
 
 export default function Skills() {
-  // State to track which category is selected
   const [activeCategory, setActiveCategory] = useState(skillsData.categories[0].id);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   
-  // Get the skills for the currently selected category
   const activeSkills = skillsData.categories.find(
     category => category.id === activeCategory
   )?.skills || [];
   
-  // Animation on scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -44,14 +41,11 @@ export default function Skills() {
       className="container mx-auto py-16 px-4"
       ref={sectionRef}
     >
-      {/* Section heading with animation */}
       <h2 className={`text-2xl font-bold mb-8 transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         Skills
       </h2>
       
-      {/* Skills categories with tabs/buttons - animated */}
       <div className={`flex flex-wrap gap-2 mb-6 transition-all duration-700 delay-100 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        {/* Map through categories to create tabs */}
         {skillsData.categories.map(category => (
           <button
             key={category.id}
@@ -69,9 +63,7 @@ export default function Skills() {
 
       </div>
       
-      {/* Skills grid with staggered animations */}
       <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 transition-all duration-700 delay-200 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        {/* If "All Skills" is selected, show all skills, otherwise show only the active category */}
         {(activeCategory === 'all' 
           ? skillsData.categories.flatMap(cat => cat.skills) 
           : activeSkills
